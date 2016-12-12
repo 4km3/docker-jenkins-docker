@@ -12,35 +12,31 @@ DOCKER_OPTS="-H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock"
 ```
 and restart the service
 
-If you are running a systemd based distro, create a Drop-in snippet with the following content:
-/etc/systemd/system/docker.service.d/override.conf
-[Service]
-ExecStart=
+If you are running a systemd based distro, create a Drop-in snippet at
+/etc/systemd/system/docker.service.d/override.conf with the following content:
+```
+[Service] 
+ExecStart= 
 ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock
+```
 
 and then restart the docker daemon
 
 ## Running
-It is recommended to start a volume docker to store the Jenkins data
-```console
-$ docker create                 \
-    -v /var/jenkins_home        \
-    --name jenkins-data         \
-    4km3/jenkins-docker
+Using docker named volumes is recommended for data persistance across upgrades.
+A docker-compose is provided for convenience.
 ```
-Then create the Jenkins container using the volume from jenkins-data
-```console
-# docker create                                  \
-    --name jenkins-docker                        \
-    -p 8080:8080                                 \
-    -p 50000:50000                               \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    --volumes-from jenkins-data                  \
-    4km3/jenkins-docker
+$ docker-compose up
 ```
-The docker container can be started or stopped at will
-```console
-# docker start jenkins-docker
+will start and create a named volume automatically if not present.
+Should you want to remove the named volume, you can do it via:
+```
+$ docker-compose down
+$ docker volume rm dockerjenkinsdocker_jenkins-storage
+```
+if docker-compose was run from this directory. Otherwise check naming with
+```
+$ docker volume ls
 ```
 The Jenkins web interface is available at localhost:8080
 

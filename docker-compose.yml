@@ -1,0 +1,18 @@
+version: '2'
+
+volumes:
+  jenkins-storage:
+
+services:
+  jenkins-server:
+    image: 4km3/jenkins-docker
+    volumes:
+      - jenkins-storage:/var/jenkins_home
+    expose:
+      - 8080
+      - 50000
+    ports:
+      - 8080:8080
+      - 50000:50000
+    restart: always
+
