@@ -9,6 +9,13 @@ ENV DOCKER_HOST 172.17.0.1:4243
 
 USER root
 
+RUN  set -e;                                                                   \
+     wget -qO-                                                                 \
+     https://releases.rancher.com/cli/v0.4.1/rancher-linux-amd64-v0.4.1.tar.gz \
+     | tar xzv                                                                 \
+     -C /usr/local/bin                                                         \
+     --strip-components=2
+
 RUN  set -e;                               \
      apt-get update;                       \
      apt-get install -y docker.io;
