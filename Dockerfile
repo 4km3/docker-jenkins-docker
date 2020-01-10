@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:latest
+FROM jenkins/jenkins:lts
 MAINTAINER Rodrigo de la Fuente <rodrigo@delafuente.email>
 
 LABEL Description="Jenkins container with docker.io binary"   \
